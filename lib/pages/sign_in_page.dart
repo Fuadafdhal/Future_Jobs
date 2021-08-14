@@ -194,16 +194,18 @@ class _SignInPageState extends State<SignInPage> {
           padding: EdgeInsets.symmetric(
             horizontal: defaultMargin,
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              header(),
-              illustration(),
-              inputEmail(),
-              inputPassword(),
-              signInButton(),
-              signUpButton(),
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                header(),
+                illustration(),
+                inputEmail(),
+                inputPassword(),
+                signInButton(),
+                signUpButton(),
+              ],
+            ),
           ),
         ),
       ),
