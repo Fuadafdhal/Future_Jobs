@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:future_jobs/models/category_model.dart';
+import 'package:future_jobs/providers/category_provider.dart';
+import 'package:future_jobs/providers/user_provider.dart';
 import 'package:future_jobs/theme.dart';
 import 'package:future_jobs/widgets/category_card.dart';
 import 'package:future_jobs/widgets/job_tile.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var userProvider = Provider.of<UserProvider>(context);
+    var categoryProvider = Provider.of<CategoryProvider>(context);
+
     Widget header() {
       return Container(
         margin: EdgeInsets.only(
@@ -28,7 +35,7 @@ class HomePage extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'Jason Powell',
+                      userProvider.user.name!,
                       style: blackTextStyle.copyWith(
                         fontSize: 24,
                         fontWeight: semiBold,
@@ -80,33 +87,53 @@ class HomePage extends StatelessWidget {
           ),
           Container(
             height: 200,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: [
-                SizedBox(
-                  width: defaultMargin,
-                ),
-                CategoryCard(
-                  imageUrl: 'assets/image_category1.png',
-                  name: 'Web Developer',
-                ),
-                CategoryCard(
-                  imageUrl: 'assets/image_category2.png',
-                  name: 'Mobile Developer',
-                ),
-                CategoryCard(
-                  imageUrl: 'assets/image_category3.png',
-                  name: 'App Designer',
-                ),
-                CategoryCard(
-                  imageUrl: 'assets/image_category4.png',
-                  name: 'Content Writer',
-                ),
-                CategoryCard(
-                  imageUrl: 'assets/image_category5.png',
-                  name: 'Video Grapher',
-                ),
-              ],
+            child: FutureBuilder<List<CategotyModel>?>(
+              future: categoryProvider.getCategories(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  int index = -1;
+                  return ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: snapshot.data!.map((e) {
+                      index++;
+                      return Container(
+                        margin: EdgeInsets.only(
+                            left: index == 0 ? defaultMargin : 0),
+                        child: CategoryCard(
+                          imageUrl: e.imageUrl,
+                          name: e.name,
+                        ),
+                      );
+                    }).toList(),
+                    // children: [
+                    //   SizedBox(
+                    //     width: defaultMargin,
+                    //   ),
+                    //   CategoryCard(
+                    //     imageUrl: 'assets/image_category1.png',
+                    //     name: 'Web Developer',
+                    //   ),
+                    //   CategoryCard(
+                    //     imageUrl: 'assets/image_category2.png',
+                    //     name: 'Mobile Developer',
+                    //   ),
+                    //   CategoryCard(
+                    //     imageUrl: 'assets/image_category3.png',
+                    //     name: 'App Designer',
+                    //   ),
+                    //   CategoryCard(
+                    //     imageUrl: 'assets/image_category4.png',
+                    //     name: 'Content Writer',
+                    //   ),
+                    //   CategoryCard(
+                    //     imageUrl: 'assets/image_category5.png',
+                    //     name: 'Video Grapher',
+                    //   ),
+                    // ],
+                  );
+                }
+                return Center(child: CircularProgressIndicator());
+              },
             ),
           ),
         ],
