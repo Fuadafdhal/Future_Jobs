@@ -1,25 +1,26 @@
 import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
-import 'package:future_jobs/models/category_model.dart';
+import 'package:future_jobs/models/job_model.dart';
 import 'package:http/http.dart' as http;
 
-class CategoryProvider with ChangeNotifier {
-  Future<List<CategotyModel>?> getCategories() async {
+class JobProvider with ChangeNotifier {
+  Future<List<JobModel>?> getJobs() async {
     try {
-      var response = await http
-          .get(Uri.parse('https://bwa-jobs.herokuapp.com/categories'));
+      var response =
+          await http.get(Uri.parse('https://bwa-jobs.herokuapp.com/jobs'));
 
       print(response.statusCode);
       print(response.body);
 
       if (response.statusCode == 200) {
-        List<CategotyModel> categories = [];
+        List<JobModel> jobs = [];
         List parsedJson = jsonDecode(response.body);
         parsedJson.forEach((element) {
-          categories.add(CategotyModel.fromJson(element));
+          jobs.add(JobModel.fromJson(element));
         });
 
-        return categories;
+        return jobs;
       } else {
         return null;
       }
