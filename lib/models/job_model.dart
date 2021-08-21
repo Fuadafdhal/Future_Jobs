@@ -30,6 +30,7 @@ class JobModel {
     category = json['category'];
     companyName = json['companyName'];
     companyLogo = json['companyLogo'];
+    location = json['location'];
     about = json['about'];
     qualifications = json['qualifications'];
     responsibilities = json['responsibilities'];
@@ -44,6 +45,7 @@ class JobModel {
       'category': category,
       'companyName': companyName,
       'companyLogo': companyLogo,
+      'location': location,
       'about': about,
       'qualifications': qualifications,
       'responsibilities': responsibilities,
